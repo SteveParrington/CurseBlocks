@@ -16,8 +16,6 @@ class CursesInterface:
         self.gameGrid = gameGrid
         
     def printGrid(self):
-        ch = '#'
-        ch = ch.encode(encoding="ascii", errors="strict")
         grid = self.gameGrid.grid
         offset = 1
         gridWindow = self.gridWindow
@@ -25,7 +23,7 @@ class CursesInterface:
             for j in range(len(grid[i])):
                 try:
                     if grid[i][j]:
-                        gridWindow.addch(i + offset, j + offset, ch)
+                        gridWindow.addch(i + offset, j + offset, ' ', curses.A_STANDOUT )
                     else:
                         gridWindow.addch(i + offset, j + offset, ' ')
                 except curses.error as e:
