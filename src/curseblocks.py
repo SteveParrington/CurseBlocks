@@ -68,7 +68,7 @@ def readRotationMaps():
 def descentFunc(interface):
     gameGrid = interface.gameGrid
     lock = gameGrid.lock
-    waitTime = 0.8
+    waitTime = gameGrid.waitTime 
     while True:
         time.sleep(waitTime)
         lock.acquire()
@@ -114,7 +114,7 @@ def initialise():
     shapes = readShapes()
     clockwise, antiClockwise = readRotationMaps()
     lock = RLock()
-    gameGrid = Grid(shapes, clockwise, antiClockwise, lock)
+    gameGrid = Grid(shapes, clockwise, antiClockwise, GRID_WIDTH, GRID_HEIGHT, lock)
     try:
         interface = CursesInterface(gameGrid)
         descentThread = Thread(group=None, target=descentFunc, name=None, args=(interface,), kwargs=None)

@@ -11,6 +11,8 @@ class CursesInterface:
         self.gridHeight = gameGrid.gridHeight
         self.gridWindow = curses.newwin(self.gridHeight + 2, self.gridWidth * 2 + 2,
                                         2, 4)
+        self.scoreWindow = curses.newwin(1, 40, 2, 40)
+        self.scoreWindow.nodelay(1)
         self.gridWindow.border()
         self.gridWindow.nodelay(1)
         self.gameGrid = gameGrid
@@ -19,6 +21,7 @@ class CursesInterface:
         grid = self.gameGrid.grid
         offset = 1
         gridWindow = self.gridWindow
+        self.__printScore()
         for i in range(len(grid)):
             for j in range(len(grid[i])):
                 try:
@@ -30,3 +33,11 @@ class CursesInterface:
                     curses.endwin()
                     print(i, j)
                     exit()
+
+    def __printScore(self):
+       grid = self.gameGrid
+       score = grid.score
+       scoreWindow = self.scoreWindow
+       scoreStr = 'Score: ' + str(score)
+       scoreWindow.addstr(0, 0, scoreStr)
+       scoreWindow.refresh()

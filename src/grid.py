@@ -4,16 +4,25 @@ import curses
 
 class Grid:
 
-    def __init__(self, shapes, clockwise, antiClockwise, lock):
+    def __init__(self, shapes, clockwise, antiClockwise, gridWidth, gridHeight, lock):
         self.shapes = shapes
         self.clockwise = clockwise
         self.antiClockwise = antiClockwise
-        self.gridWidth = 14
-        self.gridHeight = 20
+        self.gridWidth = gridWidth 
+        self.gridHeight = gridHeight
         self.initialX = 4
         self.initialY = 3
         self.lock = lock
         self.lose = False
+        self.pause = False
+        self.score = 0
+        self.basePoints = 100
+        self.waitTime = 1.0
+        self.waitTimeThreshold = 10
+        self.linesClearedThisLevel = 0
+        self.linesCleared = 0
+        self.waitTimeDecrement = 0.05
+        self.level = 1
         self.grid = [[0 for i in range(self.gridWidth)] 
                         for j in range(self.gridHeight)]
         self.fullLine = [1 for i in range(self.gridWidth)]
@@ -66,13 +75,24 @@ class Grid:
                     x = startingX + i
                     y = startingY + j
                     self.grid[y][x] = 0
+    
+    def __amendScore(self, noLinesCleared):
+        self.linesCleared += noLinesCleared
+        self.linesClearedThisLevel += noLinesCleared
+        self.score += (self.basePoints * noLinesCleared) * noLinesCleared
+        if(self.linesClearedThisLevel >= self.waitTimeThreshold):
+            self.level += 1
+            self.waitTime -= self.waitTimeDecrement
+            self.linesClearedThisLevel -= self.waitTimeThreshold
 
     def clearLines(self):
         try:
             while True:
                 self.grid.remove(self.fullLine)     
         except ValueError as e:
-            pass 
+            pass
+        noLinesCleared = self.gridHeight - len(self.grid)
+        self.__amendScore(noLinesCleared)
         while len(self.grid) < self.gridHeight:
             self.grid.insert(0, [0 for j in range(self.gridWidth)])
             
