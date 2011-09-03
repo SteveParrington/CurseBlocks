@@ -84,6 +84,7 @@ class Grid:
             self.level += 1
             self.waitTime -= self.waitTimeDecrement
             self.linesClearedThisLevel -= self.waitTimeThreshold
+            self.waitTimeThreshold *= 2
 
     def clearLines(self):
         try:

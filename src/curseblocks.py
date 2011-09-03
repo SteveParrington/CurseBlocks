@@ -75,6 +75,7 @@ def descentFunc(interface):
         gameGrid.down()
         interface.printGrid()
         lock.release()
+        waitTime = gameGrid.waitTime
 
 def controlFunc(interface):
     gameGrid = interface.gameGrid
