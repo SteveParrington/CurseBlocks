@@ -5,37 +5,45 @@ import time
 from threading import Thread, RLock 
 
 GRID_WIDTH = 14
-GRID_HEIGHT = 20
+GRID_HEIGHT = 25
 SHAPE_WIDTH = 5
 SHAPE_HEIGHT = 5
 
 def makeShape(textShape):
     shapeGrid = []
     rotates = True
+    count = 0
     for i in textShape:
         if len(i) < 3:
-            if i[0] == '0':
-                rotates = False
+            count += 1
+            if count == 1:
+                if i[0] == '0':
+                    rotates = False
+            elif count == 2:
+                if i[0].isdigit():
+                    y = int(i[0])
+            elif count == 3:
+                if i[0].isdigit():
+                    x = int(i[0])
         else:
             shapeLine = []
             for j in list(i):
                 if j.isdigit():
                     shapeLine.append(int(j))
             shapeGrid.append(shapeLine)
-    
-    return shapeGrid, rotates
+    return shapeGrid, rotates, y, x
 
 def readShapes():
     shapeFile = open('shapes', 'r')
     lines = shapeFile.readlines()
-    noOfShapes = int(len(lines) / (SHAPE_WIDTH + 1))
+    noOfShapes = int(len(lines) / (SHAPE_WIDTH + 3))
     textShapes = []
     for i in range(noOfShapes):
         j = i + 1
         if j == noOfShapes:
-            textShapes.append(lines[i * (SHAPE_WIDTH + 1):])
+            textShapes.append(lines[i * (SHAPE_WIDTH + 3):])
         else:
-            textShapes.append(lines[i * (SHAPE_WIDTH + 1):j * (SHAPE_WIDTH + 1)])
+            textShapes.append(lines[i * (SHAPE_WIDTH + 3):j * (SHAPE_WIDTH + 3)])
     shapes = []
     for i in textShapes:
         shapes.append(makeShape(i))

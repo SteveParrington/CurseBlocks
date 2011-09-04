@@ -10,6 +10,7 @@ class Grid:
         self.antiClockwise = antiClockwise
         self.gridWidth = gridWidth 
         self.gridHeight = gridHeight
+        self.gridVisibleAt = 5
         self.initialX = 4
         self.initialY = 3
         self.lock = lock
@@ -33,7 +34,7 @@ class Grid:
 
     def __getNextShape(self):
         shapeId = random.randint(0, self.noOfShapes - 1)
-        nextShape = Shape(self.shapes[shapeId][0], self.initialX, self.initialY, 
+        nextShape = Shape(self.shapes[shapeId][0], self.shapes[shapeId][3], self.shapes[shapeId][2], 
                           self.shapes[shapeId][1])
         self.currentShape = nextShape
     

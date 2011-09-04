@@ -9,8 +9,9 @@ class CursesInterface:
         curses.curs_set(0)
         self.gridWidth = gameGrid.gridWidth
         self.gridHeight = gameGrid.gridHeight
-        self.gridWindow = curses.newwin(self.gridHeight + 2, self.gridWidth * 2 + 2,
-                                        2, 4)
+        self.gridVisibleAt = gameGrid.gridVisibleAt
+        self.gridWindow = curses.newwin(self.gridHeight + 2 - self.gridVisibleAt,
+                                        self.gridWidth * 2 + 2, 2, 4)
         self.scoreWindow = curses.newwin(1, 40, 3, 40)
         self.scoreWindow.nodelay(1)
         self.gridWindow.border()
@@ -19,19 +20,21 @@ class CursesInterface:
         
     def printGrid(self):
         grid = self.gameGrid.grid
+        gameGrid = self.gameGrid
         offset = 1
         gridWindow = self.gridWindow
         self.__printScore()
-        for i in range(len(grid)):
+        for i in range(gameGrid.gridVisibleAt, len(grid)):
             for j in range(len(grid[i])):
                 try:
                     if grid[i][j]:
-                        gridWindow.addstr(i + offset, j * 2 + offset, '  ', curses.A_STANDOUT )
+                        gridWindow.addstr(i + offset - gameGrid.gridVisibleAt, j * 2 + offset, '  ', curses.A_STANDOUT)
                     else:
-                        gridWindow.addstr(i + offset, j * 2 + offset, '  ')
+                        gridWindow.addstr(i + offset - gameGrid.gridVisibleAt, j * 2 + offset, '  ')
                 except curses.error as e:
                     curses.endwin()
                     print(i, j)
+                    raise e
                     exit()
 
     def __printScore(self):
