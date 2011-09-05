@@ -1,4 +1,5 @@
 import curses
+import time
 
 class CursesInterface:
 
@@ -15,9 +16,19 @@ class CursesInterface:
         self.scoreWindow = curses.newwin(1, 40, 3, 40)
         self.scoreWindow.nodelay(1)
         self.gridWindow.border()
+        self.loseRoutineCalled = False
         self.gridWindow.nodelay(1)
         self.gameGrid = gameGrid
-        
+     
+    def loseRoutine(self):
+        self.loseRoutineCalled = True
+        gridWindow = self.gridWindow
+        limit = self.gridHeight + 2 - self.gridVisibleAt
+        fullLine = '  ' * self.gridWidth
+        for i in range(1, limit):
+            time.sleep(0.1)
+            gridWindow.addstr(i, 1, fullLine, curses.A_STANDOUT)
+
     def printGrid(self):
         grid = self.gameGrid.grid
         gameGrid = self.gameGrid

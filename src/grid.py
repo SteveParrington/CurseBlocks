@@ -37,13 +37,14 @@ class Grid:
         nextShape = Shape(self.shapes[shapeId][0], self.shapes[shapeId][3], self.shapes[shapeId][2], 
                           self.shapes[shapeId][1])
         self.currentShape = nextShape
+        if not self.__drawShape():
+            self.lose = True
     
     def __drawShape(self):
         currentShape = self.currentShape
         offset = int(len(currentShape.grid) / 2)
         startingX = currentShape.x - offset
         startingY = currentShape.y - offset
-        
         for i in range(len(currentShape.grid)):
             for j in range(len(currentShape.grid[i])):
                 x = startingX + i
@@ -55,7 +56,6 @@ class Grid:
                         return False
                 if currentShape.grid[i][j] and self.grid[y][x]:
                     return False
-
         for i in range(len(currentShape.grid)):
             for j in range(len(currentShape.grid[i])):
                 if currentShape.grid[i][j]:
@@ -69,7 +69,6 @@ class Grid:
         offset = int(len(currentShape.grid) / 2)
         startingX = currentShape.x - offset
         startingY = currentShape.y - offset
-
         for i in range(len(currentShape.grid)):
             for j in range(len(currentShape.grid[i])):
                 if currentShape.grid[i][j]:
@@ -77,6 +76,14 @@ class Grid:
                     y = startingY + j
                     self.grid[y][x] = 0
     
+    def __overflow(self):
+        grid = self.grid
+        for i in range(0, self.gridVisibleAt):
+            for j in grid[i]:
+                if j > 0:
+                    return True
+        return False
+
     def __amendScore(self, noLinesCleared):
         self.linesCleared += noLinesCleared
         self.linesClearedThisLevel += noLinesCleared
@@ -112,6 +119,8 @@ class Grid:
             self.currentShape.y -= 1
             self.__drawShape()
             self.clearLines()
+            if self.__overflow():
+                self.lose = True
             self.__getNextShape()
             if not self.__drawShape():
                 self.lose = True
