@@ -85,7 +85,6 @@ def descentFunc(interface):
         if gameGrid.lose:
             if not interface.loseRoutineCalled:
                 interface.loseRoutine()
-                curses.endwin()
             lock.release()
             exit()
         lock.release()
@@ -100,12 +99,6 @@ def controlFunc(interface):
         while ch == -1:
             lock.acquire()
             ch = gridWindow.getch()
-            if gameGrid.lose:
-                if not interface.loseRoutineCalled:
-                    interface.loseRoutine()
-                    curses.endwin()
-                lock.release()
-                exit()
             lock.release()
         if ch == 119:
             lock.acquire()
@@ -114,6 +107,11 @@ def controlFunc(interface):
         elif ch == 115:
             lock.acquire()
             gameGrid.down()
+            if gameGrid.lose:
+                if not interface.loseRoutineCalled:
+                    interface.loseRoutine()
+                lock.release()
+                exit()
             lock.release()
         elif ch == 97:
             lock.acquire()

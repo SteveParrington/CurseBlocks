@@ -22,12 +22,7 @@ class CursesInterface:
      
     def loseRoutine(self):
         self.loseRoutineCalled = True
-        gridWindow = self.gridWindow
-        limit = self.gridHeight + 2 - self.gridVisibleAt
-        fullLine = '  ' * self.gridWidth
-        for i in range(1, limit):
-            time.sleep(0.1)
-            gridWindow.addstr(i, 1, fullLine, curses.A_STANDOUT)
+        curses.endwin()
 
     def printGrid(self):
         grid = self.gameGrid.grid

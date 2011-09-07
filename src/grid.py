@@ -122,8 +122,6 @@ class Grid:
             if self.__overflow():
                 self.lose = True
             self.__getNextShape()
-            if not self.__drawShape():
-                self.lose = True
 
     def left(self):
         self.__undrawShape()
