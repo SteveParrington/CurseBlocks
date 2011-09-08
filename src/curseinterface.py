@@ -16,12 +16,10 @@ class CursesInterface:
         self.scoreWindow = curses.newwin(1, 40, 3, 40)
         self.scoreWindow.nodelay(1)
         self.gridWindow.border()
-        self.loseRoutineCalled = False
         self.gridWindow.nodelay(1)
         self.gameGrid = gameGrid
      
     def loseRoutine(self):
-        self.loseRoutineCalled = True
         curses.endwin()
 
     def printGrid(self):

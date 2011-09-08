@@ -15,6 +15,7 @@ class Grid:
         self.initialY = 3
         self.lock = lock
         self.lose = False
+        self.loseAnimationComplete = False
         self.pause = False
         self.score = 0
         self.basePoints = 100

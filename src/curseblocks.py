@@ -104,7 +104,6 @@ def controlFunc(interface):
             gameGrid.down()
             if gameGrid.lose:
                 interface.loseRoutine()
-                lock.release()
                 exit()
             lock.release()
         elif ch == 97:
@@ -138,7 +137,6 @@ def initialise():
         controlThread.start()
     except (curses.error, TypeError, IndexError, NameError) as e:
         curses.endwin()
-        print(len(gameGrid.grid))
         raise e
         exit()
         
