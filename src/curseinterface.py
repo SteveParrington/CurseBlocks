@@ -13,7 +13,10 @@ class CursesInterface:
         self.gridVisibleAt = gameGrid.gridVisibleAt
         self.gridWindow = curses.newwin(self.gridHeight + 2 - self.gridVisibleAt,
                                         self.gridWidth * 2 + 2, 2, 4)
-        self.scoreWindow = curses.newwin(1, 40, 3, 40)
+        self.nextShapeWindow = curses.newwin(7, 12, 2, 40)
+        self.nextShapeWindow.border()
+        self.nextShapeWindow.addstr(0, 1, 'Next')
+        self.scoreWindow = curses.newwin(1, 40, 10, 40)
         self.scoreWindow.nodelay(1)
         self.gridWindow.border()
         self.gridWindow.nodelay(1)
@@ -28,6 +31,7 @@ class CursesInterface:
         offset = 1
         gridWindow = self.gridWindow
         self.__printScore()
+        self.__printNextShape()
         for i in range(gameGrid.gridVisibleAt, len(grid)):
             for j in range(len(grid[i])):
                 try:
@@ -40,6 +44,23 @@ class CursesInterface:
                     print(i, j)
                     raise e
                     exit()
+    
+    def __printNextShape(self):
+        shapeGrid = self.gameGrid.nextShape.grid
+        offset = 1
+        nextShapeWindow = self.nextShapeWindow
+        for i in range(len(shapeGrid)):
+            for j in range(len(shapeGrid[i])):
+                try:
+                    if shapeGrid[i][j]:
+                        nextShapeWindow.addstr(j + offset, i * 2 + offset, '  ', curses.A_STANDOUT)
+                    else:
+                        nextShapeWindow.addstr(j + offset, i * 2 + offset, '  ')
+                except curses.error as e:
+                    curses.endwin()
+                    raise e
+                    exit()
+        nextShapeWindow.refresh()
 
     def __printScore(self):
        grid = self.gameGrid

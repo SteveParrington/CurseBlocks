@@ -30,14 +30,23 @@ class Grid:
         self.fullLine = [1 for i in range(self.gridWidth)]
         self.clearLine = [0 for i in range(self.gridWidth)]
         self.noOfShapes = len(shapes)
+        self.nextShape = None
         self.__getNextShape()
         self.__drawShape()
+    
+    def __getAShape(self):
+        shapeId = random.randint(0, self.noOfShapes - 1)
+        newShape = Shape(self.shapes[shapeId][0], self.shapes[shapeId][3], self.shapes[shapeId][2],
+                         self.shapes[shapeId][1])
+        return newShape
 
     def __getNextShape(self):
-        shapeId = random.randint(0, self.noOfShapes - 1)
-        nextShape = Shape(self.shapes[shapeId][0], self.shapes[shapeId][3], self.shapes[shapeId][2], 
-                          self.shapes[shapeId][1])
-        self.currentShape = nextShape
+        if self.nextShape:
+            self.currentShape = self.nextShape
+            self.nextShape = self.__getAShape()
+        else:
+            self.currentShape = self.__getAShape()
+            self.nextShape = self.__getAShape()
         if not self.__drawShape():
             self.lose = True
     

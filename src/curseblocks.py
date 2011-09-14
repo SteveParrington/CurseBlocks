@@ -118,9 +118,8 @@ def controlFunc(interface):
         interface.printGrid()
         lock.release()
         if ch == 113:
-            lock.acquire()
-            gameGrid.lose = True
-            lock.release()
+            curses.endwin()
+            exit()
         ch = -1
 
 def initialise():
