@@ -106,8 +106,9 @@ class Grid:
 
     def clearLines(self):
         try:
-            while True:
-                self.grid.remove(self.fullLine)     
+            for i in self.grid:
+                if 0 not in i:
+                    self.grid.remove(i)
         except ValueError as e:
             pass
         noLinesCleared = self.gridHeight - len(self.grid)
